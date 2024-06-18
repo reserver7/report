@@ -1,4 +1,3 @@
-// src/components/Dashboard.tsx
 import { useAlertContext } from '@/contexts/AlertContext'
 import { useRevenueData, useYearlyRevenueData } from '@/hooks/useRevenueData'
 import { selectedMonthState, selectedYearState } from '@/recoil'
@@ -9,7 +8,7 @@ import Input from '@shared/Input'
 import Skeleton from '@shared/Skeleton'
 import Spacing from '@shared/Spacing'
 import Top from '@shared/Top'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import MonthlyRevenueTable from './MonthlyRevenueTable'
 import RevenueChart from './RevenueChart'
@@ -18,7 +17,7 @@ const Dashboard: React.FC = () => {
   const [year, setYear] = useRecoilState(selectedYearState)
   const [month, setMonth] = useRecoilState(selectedMonthState)
 
-  const { data, isLoading } = useRevenueData(year, month)
+  const { data, isLoading, isError } = useRevenueData(year, month)
   const { data: yearlyData } = useYearlyRevenueData(year)
 
   const [tempYear, setTempYear] = useState<number>(year)
@@ -31,6 +30,19 @@ const Dashboard: React.FC = () => {
     setMonth(tempMonth)
   }
 
+  useEffect(() => {
+    if (isError || (!isLoading && !data?.Result)) {
+      open({
+        title: '에러 발생',
+        description:
+          '데이터를 불러오는 중 오류가 발생했습니다. 페이지를 리로드합니다.',
+        onButtonClick: () => {
+          window.location.reload()
+        },
+      })
+    }
+  }, [isError, isLoading, data?.Result, open])
+
   if (isLoading) {
     return (
       <Flex justify="center">
@@ -39,14 +51,12 @@ const Dashboard: React.FC = () => {
           <Spacing size={10} />
           <Skeleton width="90vw" height={150} style={{ borderRadius: 8 }} />
           <Spacing size={10} />
-          <Skeleton width="90vw" height={500} style={{ borderRadius: 8 }} />
+          <Skeleton width="90vw" height="55vh" style={{ borderRadius: 8 }} />
+          <Spacing size={10} />
+          <Skeleton width="90vw" height="30vh" style={{ borderRadius: 8 }} />
         </Flex>
       </Flex>
     )
-  }
-
-  if (!data || !data.Payment) {
-    return <div>데이터를 불러오지 못했습니다.</div>
   }
 
   return (
@@ -69,9 +79,14 @@ const Dashboard: React.FC = () => {
           조회
         </Button>
       </Filters>
-      <RevenueChart data={data} />
-      <Top title={'월별 성과'} subTitle={''}></Top>
-      <MonthlyRevenueTable data={yearlyData} />
+
+      {data && data.Result && (
+        <>
+          <RevenueChart data={data} />
+          <Top title={'월별 성과'} subTitle={''}></Top>
+          <MonthlyRevenueTable data={yearlyData} />
+        </>
+      )}
     </DashboardContainer>
   )
 }
