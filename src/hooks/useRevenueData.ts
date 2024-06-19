@@ -21,14 +21,26 @@ const fetchYearlyRevenueData = async (year: number): Promise<RevenueData> => {
 }
 
 const useRevenueData = (year: number, month?: number) => {
-  return useQuery(['revenueData', year, month], () =>
-    fetchRevenueData(year, month),
+  return useQuery(
+    ['revenueData', year, month],
+    () => fetchRevenueData(year, month),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
   )
 }
 
 const useYearlyRevenueData = (year: number) => {
-  return useQuery(['yearlyRevenueData', year], () =>
-    fetchYearlyRevenueData(year),
+  return useQuery(
+    ['yearlyRevenueData', year],
+    () => fetchYearlyRevenueData(year),
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
   )
 }
 
