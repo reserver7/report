@@ -6,8 +6,6 @@ yarn start 명령어로 로컬 실행
 
 url: http://localhost:3000
 
-이슈: 서버 API 통신시 pending 문제 발생 그리고 특정 시간 후 timeout
-
 ## 주요 기능
 
 - 캠페인 별 성과
