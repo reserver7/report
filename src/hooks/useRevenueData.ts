@@ -1,4 +1,3 @@
-// src/hooks/useRevenueData.ts
 import { useQuery } from 'react-query'
 import apiClient from '../api/apiClient'
 import { RevenueData } from '../types'

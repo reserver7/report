@@ -15,7 +15,6 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
     return <div>데이터를 불러오는 중입니다...</div>
   }
 
-  // 캠페인 데이터 추출
   const campaigns = data.Payment.Monthly.flatMap((month) =>
     month.App.flatMap((app) =>
       app.Campaign.map((campaign) => ({
@@ -25,7 +24,6 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
     ),
   )
 
-  // 캠페인별 수익 데이터를 원형 도넛 차트 형식으로 변환
   const chartData = {
     labels: campaigns.map((campaign) => campaign.campaignName),
     datasets: [
@@ -53,7 +51,6 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
     ],
   }
 
-  // 데이터 레이블 옵션 설정
   const options: ChartOptions<'doughnut'> = {
     plugins: {
       tooltip: {
