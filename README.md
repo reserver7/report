@@ -1,6 +1,9 @@
 # 프로젝트 설명
 
-로컬 실행: yarn start
+yarn install 패키지 다운 실행 후
+
+yarn start 명령어로 로컬 실행
+
 url: http://localhost:3000
 
 이슈: 서버 API 통신시 pending 문제 발생 그리고 특정 시간 후 timeout
